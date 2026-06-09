@@ -1,0 +1,22 @@
+.header-container{
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1rem;
+    background-color:srgb(255, 255, 255);
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+}
+.header-link{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: black;
+}
+.header-link img{
+    width: 24px;
+    height: 24px;
+}

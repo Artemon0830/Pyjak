@@ -1,0 +1,70 @@
+.place-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.place-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.place-description {
+  margin: 20px 0;
+  font-size: 18px;
+}
+
+.place-gallery {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.place-photo {
+  width: 320px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.place-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.detail-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f5f5f5;
+}
+
+.address-section,
+.tags-section,
+.features-section {
+  margin-top: 30px;
+}
+
+.address-card {
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.tags,
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag,
+.feature {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #ececec;
+}
