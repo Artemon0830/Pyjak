@@ -30,7 +30,7 @@ class ChatService{
 async sendMessage(jwtPayload:ITokenPayload,placeId:string, dto:ICreateChatPayload):Promise<IMessage>{
  const chat = await this.createChat(jwtPayload,placeId)
 
-    const message = await messageRepository.create(chat._id,jwtPayload.userId,dto.text)
+    const message = await messageRepository.create(chat._id.toString(),jwtPayload.userId,dto.text)
 
   await Chat.findByIdAndUpdate(chat._id, {
     lastMessage: dto.text,
@@ -64,7 +64,11 @@ async createChat(jwtPayload:ITokenPayload,placeId:string):Promise<IChat | null>{
     }
     let chat = await chatRepository.findByUserAndPlace(user._id, place._id);
     if(!chat){
-    await chatRepository.createChat(user._id,place._id,place._userId)}
+      chat = await chatRepository.createChat(user._id,place._id,place._userId)
+      if(!chat){
+        throw new ApiError('Chat creation failed',500)
+      }
+    }
     return chat;
 }
 

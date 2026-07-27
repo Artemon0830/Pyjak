@@ -14,7 +14,7 @@ const userSchema = new Schema(
     phone: { type: String, required: false },
     avatar: { type: String, required: false },
     role: { type: String, enum: RoleEnum, default: RoleEnum.USER },
-    favorites: [{ type: String, ref: 'places' }],
+    favorites: [{ type:Schema.Types.ObjectId, ref: "Place" }],
     isVerified: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     // =========================
@@ -75,4 +75,4 @@ const userSchema = new Schema(
     },
   );
 
-export const User = model<IUser>("users", userSchema);
+export const User = model<IUser>("User", userSchema);

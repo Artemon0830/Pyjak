@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { placeActions } from '@/redux/features/places/places.slice';
 import FavoritesButtonComponent from '@/components/FavoritesButtonComponent';
 import { Link } from 'react-router-dom';
+import '../css/PlacesPage.css'
 
 
 
@@ -19,7 +20,7 @@ dispath(placeActions.loadPlaces())
 
   return (
     <div className='users'>
-      <h1>Places</h1>
+      <h1 className = 'places-title'>Places</h1> 
       {places.map(place=><div key={place._id}>
         <Link to={`/places/${place._id}`}><h2>{place.name}</h2></Link>
         <p>{place.description}</p>

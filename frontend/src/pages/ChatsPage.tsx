@@ -1,35 +1,30 @@
+import ChatComponent from '@/components/ChatComponent';
 import { chatService } from '@/redux/features/chat/chat.api';
+import { IChat } from '@/redux/features/chat/chat.types';
+import { placeService } from '@/redux/features/places/places.api';
+import { IPlace } from '@/redux/features/places/places.types';
 import React, { useEffect, useState } from 'react';
 
-interface IChat {
-    _id: string;
-    userId: string;
-    placeId: string;
-    managerId?: string;
-    lastMessage?: string;
-    lastMessageTime?: string;
-}
+
+
+
 const ChatsPage = () => {
+    
     const [chats, setChats] = useState<IChat[]>([]);
+    const [places, setPlaces] = useState<IPlace[]>([]); // Assuming you have a way to fetch places
 
     useEffect(() => {
-    chatService.getMyChats()
-      .then((data) => setChats(data))
-      .catch((error) => console.error('Error fetching chats:', error));
+        placeService.getAll().then((data) => setPlaces(data)); // Fetch places if needed
+
+        chatService.getMyChats()
+            .then((data) => setChats(data))
+            .catch((error) => console.error('Error fetching chats:', error));
     }, []);
 
     return (
         <div>
-         
-           {chats.map(chat => (
-            <div key={chat._id}>
-                <h3>Chat with {chat.userId === chat.managerId ? 'Manager' : 'User'}</h3>
-                {chat.lastMessage && <p>Last message: {chat.lastMessage}</p>}
-                {chat.lastMessageTime && <p>Last message time: {new Date(chat.lastMessageTime).toLocaleString()}</p>}
-                {chat.placeId && <p>Place ID: {chat.placeId}</p>}
-             
-            </div>
-           ))}
+    
+        <ChatComponent chats={chats} places={places} />  
         </div>
     );
 };

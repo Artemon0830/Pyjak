@@ -29,11 +29,24 @@ class UserRepository {
    await User.findByIdAndDelete(userId);
 
   }
-  async addToFavorite(userId:string | undefined,placeId:string):Promise<string | null>{
-    return await User.findByIdAndUpdate(userId,{favorites:placeId},{new:true})
+ async getByIdWithFavorites(userId: string) {
+    return await User.findById(userId).populate("favorites");
   }
-  async removeFromFavorite(userId:string | undefined,placeId:string):Promise<void>{ 
-  await User.findByIdAndUpdate(userId, { $pull: { favorites: placeId } }, { new: true });
+
+  async addToFavorite(userId: string | undefined, placeId: string) {
+    return await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { favorites: placeId } },
+      { new: true }
+    );
+  }
+
+  async removeFromFavorite(userId: string | undefined, placeId: string){ 
+    await User.findByIdAndUpdate(
+      {_id:userId},
+      {$pull:{favorites:placeId}}
+    
+    );
   }
 
 }

@@ -1,5 +1,4 @@
 import { model, Schema } from "mongoose";
-import { User } from "./user.model";
 import { IPlace } from "../interface/place.interface";
 import { StatusEnum } from "../enums/status.enum";
 
@@ -55,7 +54,7 @@ const placeSchema = new Schema<IPlace>(
       type: String
     },
 
-   _userId: { type:String, required: true, ref: User },
+   _userId: { type:String, required: true, ref: "User" },
 
     photos: [
       {
@@ -92,4 +91,4 @@ const placeSchema = new Schema<IPlace>(
   }
 );
 
-export const Place = model<IPlace>("place", placeSchema);
+export const Place = model<IPlace>("Place", placeSchema);

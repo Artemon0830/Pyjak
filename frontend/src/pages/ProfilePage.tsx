@@ -71,7 +71,8 @@ const ProfilePage = () => {
                     />
                 )
             }
-           <NavLink to='/create-place'> +Create Place</NavLink> 
+          <NavLink to={'/me/places'}>My Places</NavLink>
+          <NavLink to={'/me/news'}>My News</NavLink>
         </div>
     )
 }

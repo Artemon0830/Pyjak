@@ -4,7 +4,7 @@ import { Message } from "../models/message.model";
 import { chatRepository } from "./chat.repository";
 
 class MessageRepository {
-async create(chatId:string,senderId:string,text:string):Promise<IMessage| null>{
+async create(chatId:string|null,senderId:string,text:string):Promise<IMessage| null>{
     return await Message.create({chatId,senderId,text,readBy:[senderId]}) 
 }
 async updateReadBy(chatId: string, userId: string): Promise<void> {

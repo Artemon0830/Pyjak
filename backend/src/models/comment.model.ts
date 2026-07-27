@@ -4,8 +4,8 @@ import { IComment } from "../interface/comment.interface";
 
 const commentSchema = new Schema<IComment>(
 {
-    _placeId:{type:String,required:true,ref:"place"},
-    _userId:{type:String,required:true,ref:"users"},
+    _placeId:{type:String,required:true,ref:"Place"},
+    _userId:{type:String,required:true,ref:"User"},
     text:{type:String},
     rating:{type:Number,min:1,max:5}
 },
@@ -14,4 +14,4 @@ const commentSchema = new Schema<IComment>(
     versionKey: false
   }
 );
-export const Comment = model<IComment>("comment",commentSchema) 
+export const Comment = model<IComment>("Comment",commentSchema) 

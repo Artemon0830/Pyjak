@@ -7,8 +7,6 @@ import { userRepository } from "../repositories/user.repository";
 import { FileItemTypeEnum } from "../enums/file-item-type.enum";
 import { s3Service } from "./s3.service";
 import { UploadedFile } from "express-fileupload";
-
-import { placeRepository } from "../repositories/place.repository";
 import { IPlace } from "../interface/place.interface";
 
 
@@ -94,60 +92,38 @@ class UserService{
    return await userRepository.deleteById(user._id)
   
   }
-  async getFavorites(jwtPayload:ITokenPayload):Promise<IPlace[]>{
-    const user = await userRepository.getById(jwtPayload.userId)    
-    if(!user){
-      throw new ApiError('User not found',404)
+async getFavorites(jwtPayload: ITokenPayload): Promise<IPlace[]> {
+    const user = await userRepository.getByIdWithFavorites(jwtPayload.userId);    
+    if (!user) {
+      throw new ApiError('User not found', 404);
+    }
+    return user.favorites as unknown as IPlace[];
+  }
+
+  async addToFavorite(jwtPayload: ITokenPayload, placeId: IPlace['_id']): Promise<string> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user) {
+      throw new ApiError('User not found', 404);
+    }
+    const isAlreadyFavorite = user.favorites?.some(
+      (favorite) => favorite.toString() === placeId.toString()
+    );
+
+    if (isAlreadyFavorite) {
+      throw new ApiError('Place already in favorites', 400);
     }
 
-    return user.favorites as IPlace[]
-  
-  }
-  async addToFavorite(
-  jwtPayload: ITokenPayload,
-  placeId: IPlace['_id']
-): Promise<string | null> {
-
-  const user = await userRepository.getById(
-    jwtPayload.userId
-  )
-
-  if (!user) {
-    throw new ApiError(
-      'User not found',
-      404
-    )
+    await userRepository.addToFavorite(user._id.toString(), placeId.toString());
+    return 'Place added to favorites successfully';
   }
 
-  const isAlreadyFavorite =
-    user.favorites?.some(
-      favorite =>
-        favorite.toString() === placeId
-    )
-
-  if (isAlreadyFavorite) {
-    throw new ApiError(
-      'Place already in favorites',
-      400
-    )
-  }
-
-  return await userRepository.addToFavorite(
-    user._id,
-    placeId
-  )
-}
-  async removeFromFavorite(jwtPayload:ITokenPayload,placeId:IPlace['_id']):Promise<void>{
-    const user = await userRepository.getById(jwtPayload.userId)
-    if(!user){
-      throw new ApiError('User not found',404)
+  async removeFromFavorite(jwtPayload: ITokenPayload, placeId: IPlace['_id']): Promise<string> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user) {
+      throw new ApiError('User not found', 404);
     }
-    const place  = await placeRepository.getPlace(placeId)
-    if(!place){
-      throw new ApiError('Place not found',404)
-    }
-     await userRepository.removeFromFavorite(user._id,place._id)
+    await userRepository.removeFromFavorite(user._id, placeId);
+     return 'Place remove from favorites'
   }
-
 }
 export const userService =new UserService()

@@ -1,5 +1,5 @@
 
-import { createPlace, deletePlace, getPendingPlaces, loadMePlaces, loadPlace, loadPlaces, searchPlaces, updatePlace } from "./places.thunk";
+import { createPlace, deletePlace, getPendingPlaces, loadMePlaces, loadPlace, loadPlaces, searchPlaces, updatePlace, uploadPhotos } from "./places.thunk";
 import { createSlice } from "@reduxjs/toolkit";
 import { IPlace } from "./places.types";
 type PlaceSliceType = {
@@ -7,12 +7,14 @@ type PlaceSliceType = {
     placeLoading?:boolean
     error?:string | null
     place:IPlace | null
+
 }
 const placeInitialState:PlaceSliceType = {
     places:[],
     placeLoading:false,
     error:null,
-    place:null
+    place:null,
+
 }
 
 export const placeSlice = createSlice({
@@ -45,6 +47,9 @@ export const placeSlice = createSlice({
             state.places = action.payload;
         
         })
+        .addCase(uploadPhotos.fulfilled,(state,action)=>{
+            state.place =action.payload
+        })
 }})
 
 export const placeActions = {
@@ -56,5 +61,6 @@ export const placeActions = {
     deletePlace,
     updatePlace,
     searchPlaces,
-    getPendingPlaces
+    getPendingPlaces,
+    uploadPhotos
 }

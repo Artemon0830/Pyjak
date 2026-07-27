@@ -2,6 +2,9 @@ import { Router } from "express";
 import { placeController } from "../controller/place.controller";
 import { commentController } from "../controller/comment.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
+import { newsController } from "../controller/news.controller";
+import { roleMiddleware } from "../middlewares/role.middleware";
+import { RoleEnum } from "../enums/role.enum";
 
 
 const router = Router();
@@ -12,13 +15,14 @@ router.get('/pending',placeController.getPlacesPending);
 router.get('/me',authMiddleware.checkAccessToken,placeController.getAllPlacesMe);
 router.get('/comments',commentController.getComments)
 router.get('/user/:userId',placeController.getPlaceByUser);
-router.get('/pending',placeController.getPlacesPending);
+router.get('/pending',authMiddleware.checkAccessToken,placeController.getPlacesPending);
 router.get('/:placeId',placeController.getPlace);
 // router.post('/:userId',placeController.create);
 router.put('/:placeId',authMiddleware.checkAccessToken,placeController.update)
 router.delete('/:placeId',authMiddleware.checkAccessToken,placeController.delete);
 router.post('/:placeId/uploadPhotos',authMiddleware.checkAccessToken,placeController.uploadPhotos);
 router.post('/:placeId/comments',authMiddleware.checkAccessToken,commentController.create)
+router.post('/:placeId/news', authMiddleware.checkAccessToken,roleMiddleware.checkRole(RoleEnum.MANAGER),newsController.createNews);
 router.get('/:placeId/comments',commentController.getCommentsByPlace)
 router.put('/:placeId/comments/:commentId',authMiddleware.checkAccessToken,commentController.update)
 router.delete('/:placeId/comments/:commentId',authMiddleware.checkAccessToken,commentController.delete)

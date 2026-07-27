@@ -7,6 +7,7 @@ import { configs } from './configs/configs';
 import { userRouter } from './routes/user.router';
 import fileUpload from 'express-fileupload';
 import { chatRouter } from './routes/chat.router';
+import { newsRouter } from './routes/news.router';
 
 
 
@@ -22,6 +23,7 @@ app.use('/auth',authRouter);
 app.use('/users', userRouter);
 app.use('/places',placeRouter)
 app.use('/chats',chatRouter)
+app.use('/news',newsRouter)
 
 async function start() {
   try {

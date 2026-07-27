@@ -13,21 +13,24 @@ import CommentsComponent from '@/components/CommentsComponent'
 import CreateCommenFormComponent from '@/components/CreateCommenFormComponent'
 import CreateMessage from '@/components/CreateMessage'
 
+
 const PlacePage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const dispatch = useAppDispatch()
 
-  const {place,placeLoading}
-   = useAppSelector((state) => state.placeSlice)
+  const {placeSlice:{place,placeLoading},userSlice:{user}}
+   = useAppSelector((state) => state)
 
   const { placeId } = useParams()
-
+      console.log('user:', user)
+      console.log('place:', place)
   useEffect(() => {
     if (placeId) {
       dispatch(placeActions.loadPlace(placeId))
     }
+    
   }, [dispatch, placeId])
   
 
@@ -45,6 +48,13 @@ const PlacePage = () => {
       <Link to='/places'>
         ← Back
       </Link>
+    
+      {user?.role ==='manager' && (
+        <Link to={`/places/${placeId}/news`}>
+          Create news
+        </Link>
+      )}
+     
 
       
 

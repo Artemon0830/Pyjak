@@ -63,10 +63,10 @@ async uploadAvatar(req:Request,res:Response,next:NextFunction){
         console.log(req.headers['content-type'])
         console.log(req.files)
         console.log(req.body)
-        if(!req.files || !req.files.avatar){
+        if(!req.files || !req.files.photos){
             throw new ApiError("No file uploaded",400)
         }
-        const file = req.files.avatar as UploadedFile;
+        const file = req.files.photos as UploadedFile;
         const user = await userService.uploadAvatar(jwtPayload,file)
         const result = userPresenter.toPubblicResDto(user as IUser)
 
@@ -110,37 +110,40 @@ async deleteById(req:Request,res:Response,next:NextFunction){
         next(e)
     }
 }
-async getFavorites(req:Request,res:Response,next:NextFunction){
-    try{
-        const jwtPayload = res.locals.jwtPayload as ITokenPayload;
-        const result = await userService.getFavorites(jwtPayload);
-        res.json(result);
-    }catch(e){
-        next(e)
+async getFavorites(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+      const result = await userService.getFavorites(jwtPayload);
+      res.json(result); 
+    } catch (e) {
+      next(e);
     }
-}
+  }
 
+  async addToFavorite(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+      const placeId = req.params.placeId as IPlace['_id'];
+      
+      const result = await userService.addToFavorite(jwtPayload, placeId);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 
-async addToFavorite(req:Request,res:Response,next:NextFunction){
-    try{
-        const jwtPayload = res.locals.jwtPayload as ITokenPayload;
-        const placeId = req.params.placeId as IPlace['_id'];
-        const result = await userService.addToFavorite(jwtPayload,placeId);
-        res.json(result);
-    }catch(e){
-        next(e)
+  async removeFromFavorite(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+      const placeId = req.params.placeId as IPlace['_id'];
+      
+      await userService.removeFromFavorite(jwtPayload, placeId);
+      
+      res.json( placeId ); 
+    } catch (e) {
+      next(e);
     }
-}
-async removeFromFavorite(req:Request,res:Response,next:NextFunction){
-    try{
-        const jwtPayload = res.locals.jwtPayload as ITokenPayload;
-        const placeId = req.params.placeId  as IPlace['_id'];
-        const result = await userService.removeFromFavorite(jwtPayload,placeId);
-        res.json(result);
-    }catch(e){
-        next(e)
-    }
-}
+  }
 }
 
 

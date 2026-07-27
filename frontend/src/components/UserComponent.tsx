@@ -12,7 +12,7 @@ const UserComponent: FC<IProps> = ({ user }) => {
 
       {user.avatar && (
         <img
-          src={`${import.meta.env.VITE_MINIO_PUBLIC_URL}/avatars/${user.avatar}`}
+          src={`${import.meta.env.VITE_MINIO_PUBLIC_URL}/photos/${user.avatar}`}
           alt={user.name}
           width={200}
         />

@@ -32,7 +32,7 @@ const HeaderComponent = () => {
                 )}
                 <div className='header-link'>
                     <img src ='https://img.icons8.com/?size=100&id=lCYw1uasYgD5&format=png&color=000000' alt='chat'/>
-                 <NavLink to={'/mychat'}>My Chats</NavLink>   
+                 <NavLink to={'/chats'}>My Chats</NavLink>   
                 </div>
                {user?(
 

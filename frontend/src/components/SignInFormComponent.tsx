@@ -9,6 +9,7 @@ import { authActions } from '@/redux/features/auth/auth.slice'
 
 import '../css/SignInFormComponent.css'
 import { ISignInDto } from '@/redux/features/auth/auth.types'
+import { userActions } from '@/redux/features/users/users.slice'
 
 const SignInFormComponent = () => {
     const [showPassword, setShowPassword] =
@@ -50,6 +51,7 @@ const SignInFormComponent = () => {
                         resultAction.payload.user
                     )
                 )
+                await dispatch(userActions.loadMe())
                 setSuccessMessage('Sign in successful 🎉')
                 setTimeout(() => {
                     navigate('/users')

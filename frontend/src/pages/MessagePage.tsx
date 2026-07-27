@@ -1,26 +1,30 @@
+
+import CreateMessage2 from '@/components/CreateMessage2';
+import MessageComponent from '@/components/MessageComponent';
 import { chatService } from '@/redux/features/chat/chat.api';
-import { IMessage } from '@/redux/features/chat/chat.types';
+import {IMessage } from '@/redux/features/chat/chat.types';
+import { userService } from '@/redux/features/users/users.api';
+import { IUser } from '@/redux/features/users/users.types';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const MessagePage = () => {
-    const {chatId} = useParams();
+    const { chatId } = useParams();
     const [messages, setMessages] = useState<IMessage[]>([]);
+    const [currentUserId, setCurrentUserId] = useState<IUser['_id']>('');
     useEffect(() => {
-        if (chatId) {
-          chatService.getMessagesByChatId(chatId).then(setMessages).catch((error) => console.error('Error fetching messages:', error));
-        }
+        userService.getMe()
+            .then((user) => setCurrentUserId(user._id));
+        chatService.getMessagesByChatId(chatId!)
+            .then((data) => setMessages(data));
     }, [chatId]);
-
+    const clickMessages = (message: IMessage) => {
+        setMessages((prevMessages) => [...prevMessages, message]);
+    }
     return (
         <div>
-            {messages.map((message) => (
-                <div key={message._id}>
-                    <p>{message.text}</p>
-                    <small>{message.createdAt?.toLocaleString()}</small>
-                </div>
-            ))}
-
+            <MessageComponent messages={messages} currentUserId={currentUserId} />
+            <CreateMessage2 chatId={chatId!} clickMessages={clickMessages}/>
         </div>
     );
 };

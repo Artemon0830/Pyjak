@@ -1,13 +1,18 @@
 export interface IChat {
-    _id:string;
+    _id: string;
     userId: string;
     placeId: string;
     managerId?: string;
     lastMessage?: string;
-    lastMessageTime?: Date;
-} 
+    lastMessageTime?: string;
+}
+
+
 export interface ICreateChatPayload {
     placeId: string;
+    text: string;
+}
+export interface ICreateMessage {
     text: string;
 }
 export interface IMessage {

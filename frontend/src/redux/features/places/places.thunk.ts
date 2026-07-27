@@ -3,6 +3,7 @@ import { placeService } from "./places.api";
 import { AxiosError } from "axios";
 import { ICreatePlace, IPlace } from "./places.types";
 
+
  const loadPlaces = createAsyncThunk(
     'placeSlice/loadPlaces',
     async(_,thunkApi)=>{
@@ -17,9 +18,9 @@ import { ICreatePlace, IPlace } from "./places.types";
 )
  const loadMePlaces = createAsyncThunk(
     'placeSlice/loadMePlaces',
-    async(_,thunkApi)=>{
+    async(status:string,thunkApi)=>{
         try{
-           const places = await placeService.getMePlaces();
+           const places = await placeService.getMePlaces(status);
            return thunkApi.fulfillWithValue(places); 
         }catch(e){
             const error = e as AxiosError;
@@ -98,4 +99,17 @@ const deletePlace = createAsyncThunk(
             return thunkApi.rejectWithValue(error.response?.data)
         }
     })
- export { loadPlaces, loadMePlaces, loadPlace, createPlace, deletePlace, updatePlace, searchPlaces, getPendingPlaces }   
+   const uploadPhotos = createAsyncThunk(
+    'uploadPhotos',
+    async({placeId,formData}:{placeId:string,formData:FormData},thunkAPI)=>{
+        try {
+            const response = await placeService.uploadPhotos(placeId,formData);
+            return thunkAPI.fulfillWithValue(response)
+            
+        } catch(e) {
+              const error = e as AxiosError;
+            return thunkAPI.rejectWithValue(error.response?.data)  
+        }
+    }
+   )
+ export { loadPlaces, loadMePlaces, loadPlace, createPlace, deletePlace, updatePlace, searchPlaces, getPendingPlaces,uploadPhotos }   

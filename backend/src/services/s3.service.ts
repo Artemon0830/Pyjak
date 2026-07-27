@@ -52,10 +52,11 @@ class S3Service {
     itemId: string,
   ): Promise<string | undefined> {
     try {
+       const bucketName = 'photos';
       const filePath = this.buildPath(itemType, itemId, file.name);
       await this.client.send(
         new PutObjectCommand({
-          Bucket: configs.AWS_S3_BUCKET_NAME,
+          Bucket:bucketName,
           Key: filePath,
           Body: file.data,
           ContentType: file.mimetype,

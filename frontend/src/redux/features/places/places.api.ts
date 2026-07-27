@@ -3,17 +3,22 @@ import { urls } from "@/constants/urls";
 import { ICreatePlace, IPlace } from "./places.types";
 
 
+
 export const placeService = {
     create:async(data:ICreatePlace):Promise<IPlace>=>{
         const response = await axiosInstanse.post<IPlace>('/places/create', data);
         return response.data;
     },
+    uploadPhotos:async(placeId:string,formData:FormData):Promise<IPlace>=>{
+        const response = await axiosInstanse.post(`/places/${placeId}/uploadPhotos`,formData)
+        return response.data
+    },
     getAll:async():Promise<IPlace[]>=>{
         const response = await axiosInstanse.get<IPlace[]>('/places/allPlaces');
         return response.data;
     },
-    getMePlaces:async():Promise<IPlace[]>=>{
-        const response = await axiosInstanse.get<IPlace[]>('/places/me');
+    getMePlaces:async(status:string):Promise<IPlace[]>=>{
+        const response = await axiosInstanse.get<IPlace[]>('/places/me',{params:{status}});
         return response.data;
     },
     updateMePlace:async(placeId:string,data:Partial<IPlace>):Promise<IPlace>=>{

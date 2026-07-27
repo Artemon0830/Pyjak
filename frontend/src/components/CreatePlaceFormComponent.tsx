@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+
 
 import { useAppDispatch } from '@/app/hooks'
 import { ICreatePlace } from '@/redux/features/places/places.types'
 import { placeActions } from '@/redux/features/places/places.slice'
 
 import '../css/SignInFormComponent.css'
+import UploadPhotosPlaceComponent from './place/UploadPhotosPlaceComponent'
 
 const CreatePlaceFormComponent = () => {
     const weekDays = [
@@ -19,9 +20,11 @@ const CreatePlaceFormComponent = () => {
     'Sunday'
 ]
     const [successMessage, setSuccessMessage] = useState('')
+    const [step,setStep]=useState(1)
+    const [placeId, setPlaceId] = useState<string | null>(null)
 
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
+  
 
     const {
         handleSubmit,
@@ -32,17 +35,13 @@ const CreatePlaceFormComponent = () => {
     const onSubmit = async (data: ICreatePlace) => {
         try {
         
-            await dispatch(
+            const place = await dispatch(
                 placeActions.createPlace(data)
-            )
-
-            setSuccessMessage(
-                'Place created successfully 🎉'
-            )
-
-            setTimeout(() => {
-                navigate('/places/me')
-            }, 3000)
+            ).unwrap()
+           setPlaceId(place._id)
+        
+           setSuccessMessage('Place created successfully 🎉')
+           setStep(2)
         } catch (e) {
             console.log(e)
         }
@@ -51,6 +50,7 @@ const CreatePlaceFormComponent = () => {
     return (
         <div className='sign-in'>
             <div className='sign-in-form'>
+              {step === 1 &&(  
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <h1>Create Place</h1>
 
@@ -217,7 +217,14 @@ const CreatePlaceFormComponent = () => {
                         <p>{successMessage}</p>
                     )}
                 </form>
-            )</div>
+            )}
+                {step === 2 && placeId && (
+                <UploadPhotosPlaceComponent
+                    placeId={placeId}
+                />
+            )}
+            Step {step} / 2
+            </div>
         </div>
     )
 }

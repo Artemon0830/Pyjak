@@ -1,9 +1,14 @@
 
-import ChatPage from "@/pages/ChatsPage";
+import ChatsPage from "@/pages/ChatsPage";
+import CreateNewsPage from "@/pages/CreateNewsPage";
+
 import CreatePlacePage from "@/pages/CreatePlacePage";
 import FavoritesPage from "@/pages/FavoritesPage";
 import MainLayout from "@/pages/MainLayout";
 import MessagePage from "@/pages/MessagePage";
+import MyPlacePage from "@/pages/MyPlacePage";
+import NewPage from "@/pages/NewPage";
+import NewsPage from "@/pages/NewsPage";
 import PlacePage from "@/pages/PlacePage";
 import PlacesPage from "@/pages/PlacesPage";
 import ProfilePage from "@/pages/ProfilePage";
@@ -22,8 +27,11 @@ export const router = createBrowserRouter([
     {path:'users/:userId',element:<UserPage/>},
     {path:'places',element:<PlacesPage/>},
     {path:'places/:placeId',element:<PlacePage/>},
+    {path:'places/:placeId/news',element:<CreateNewsPage/>},
     {path:'places/comments/:placeId',element:<PlacePage/>},
     {path:'places/create',element:<CreatePlacePage/>},
+    {path:'me/places',element:<MyPlacePage/>},
+    {path:'me/news',element:<NewsPage/>},
     {path:'auth/register',element:<RegisterPage/>},
     {path:'auth/sign-in',element:<SignInPage/>},
     {path:'auth/sign-up',element:<SignUpPage/>},
@@ -31,8 +39,12 @@ export const router = createBrowserRouter([
     {path:'favorites',element:<FavoritesPage/>},
     {path:'profile',element:<ProfilePage/>},
     {path:'search',element:<SearchPage/>},
-    {path:'mychat',element:<ChatPage/>},
-    {path:'chats/:chatId/messages',element:<MessagePage/>}
+    {path:'chats',element:<ChatsPage/>},
+    {path:'chats/:chatId/messages',element:<MessagePage/>},
+    {path:'news',element:<NewsPage/>},
+    {path:'news/:newsId',element:<NewPage/>}
+
+
   
 
   ]}  

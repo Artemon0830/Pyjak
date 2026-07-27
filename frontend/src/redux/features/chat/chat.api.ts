@@ -1,13 +1,5 @@
 import { axiosInstanse } from "@/app/axios";
-import { ICreateChatPayload, IMessage } from "./chat.types";
-interface IChat {
-    _id: string;
-    userId: string;
-    placeId: string;
-    managerId?: string;
-    lastMessage?: string;
-    lastMessageTime?: string;
-}
+import { IChat, ICreateChatPayload, ICreateMessage, IMessage } from "./chat.types";
 export const chatService = {
   getMyChats: async(): Promise<IChat[]> => {
     const response = await axiosInstanse.get('/chats/me');
@@ -17,14 +9,18 @@ export const chatService = {
     const response = await axiosInstanse.post<IMessage>(`/chats/places/${placeId}/messages`, dto);
     return response.data;
   },
-  sendMessage: async (chatId:string, dto:ICreateChatPayload): Promise<IChat> => {
+  sendMessage: async (chatId:string, dto:ICreateMessage): Promise<IMessage> => {
     const response = await axiosInstanse.post(`/chats/${chatId}/messages`, dto);
     return response.data;
         },
   getMessagesByChatId: async (chatId:string): Promise<IMessage[]> => {
     const response = await axiosInstanse.get<IMessage[]>(`/chats/${chatId}/messages`);
     return response.data;
-  },      
+  },
+  getChatById: async (chatId:string): Promise<IChat> => {
+    const response = await axiosInstanse.get<IChat>(`/chats/${chatId}`);
+    return response.data;
+  }      
    
 
 

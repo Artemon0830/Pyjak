@@ -1,4 +1,5 @@
 import { authSlice } from "@/redux/features/auth/auth.slice";
+import { newsSlice } from "@/redux/features/news/news.slice";
 import { commentSlice } from "@/redux/features/places/comments.slice";
 import { placeSlice } from "@/redux/features/places/places.slice";
 import { favoritesSlice } from "@/redux/features/users/favorites.slice";
@@ -11,7 +12,8 @@ export const store = configureStore({
         placeSlice:placeSlice.reducer,
         authSlice:authSlice.reducer,
         favoritesSlice:favoritesSlice.reducer,
-        commentSlice:commentSlice.reducer
+        commentSlice:commentSlice.reducer,
+        newsSlice:newsSlice.reducer
     }
 })
 
