@@ -25,3 +25,8 @@ dist-ssr
 *.sw?
 .env
 .env.local
+mongo_db/
+*.wt
+*.turtle
+journal/
+diagnostic.data/
